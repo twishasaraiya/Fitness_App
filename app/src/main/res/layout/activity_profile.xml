@@ -7,13 +7,16 @@
     tools:context="com.example.FirstApp2.ProfileActivity"
     android:orientation="vertical">
 
-    <TextView
+    <LinearLayout
+        android:id="@+id/user_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Profile Page" />
+        android:orientation="vertical">
+
+    </LinearLayout>
     <Button
         android:id="@+id/sign_out_button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="SignOut" />
 </LinearLayout>

@@ -4,4 +4,7 @@
     <color name="colorPrimaryDark">#934ddb</color>
     <color name="colorAccent">#2a202e</color>
     <color name="primary_dark_material_dark">#2a202e</color>
+
+    <color name="background_dark">#000</color>
+    <color name="dark_grey_dot">#c1bebe</color>
 </resources>

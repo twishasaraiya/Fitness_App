@@ -93,7 +93,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private void signOut(){
         if( mAuth.getCurrentUser() != null) {
             mAuth.signOut();
-            Intent intent = new Intent(this,SignupActivity.class);
+            Intent intent = new Intent(this,WelcomeActivity.class);
             startActivity(intent);
         }else{
             mGoogleSignInClient.signOut().addOnCompleteListener(ProfileActivity.this,
@@ -102,7 +102,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                         public void onComplete(@NonNull Task<Void> task) {
                             mAuth.signOut(); //signOut Firebase
                             Toast.makeText(ProfileActivity.this, "Signed Out", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(ProfileActivity.this,SignupActivity.class);
+                            Intent intent = new Intent(ProfileActivity.this,WelcomeActivity.class);
                             startActivity(intent);
                             finish();
                         }

@@ -36,13 +36,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Crossfit"
+                android:text="THE START UP PLAN"
                 android:textColor="#fff"
-                android:textSize="40sp"
+                android:textSize="30sp"
                 tools:ignore="HardcodedText"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="80dp"
+                android:layout_marginTop="150dp"
+                android:textAlignment="center"
                 />
 
             <ImageView
@@ -60,13 +61,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Resistance"
+                android:text="THE LEAN FIT PLAN"
                 android:textColor="#fff"
-                android:textSize="40sp"
+                android:textSize="30sp"
                 tools:ignore="HardcodedText"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="300dp"
+                android:layout_marginTop="370dp"
                 />
 
             <ImageView
@@ -85,13 +86,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Strength"
+                android:text="THE BODYWEIGHT ONLY PLAN"
                 android:textColor="#fff"
-                android:textSize="40sp"
+                android:textSize="30sp"
                 tools:ignore="HardcodedText"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="520dp"
+                android:layout_marginTop="570dp"
                 />
 
         </RelativeLayout>

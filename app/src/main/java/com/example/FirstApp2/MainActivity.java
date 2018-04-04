@@ -36,8 +36,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         String message;
         switch(view.getId()){
             case R.id.imageView1:
-                    intent =new Intent(this, DisplayMessageActivity.class);
-                    message="Crossfit";
+                    intent =new Intent(this, BeginnerWorkout.class);
+                    message="THE STARTUP PLAN";
                     intent.putExtra(EXTRA_MESSAGE,message);
                     startActivity(intent);
                 break;

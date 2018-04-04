@@ -24,7 +24,6 @@ public class WelcomeActivity extends AppCompatActivity {
     private TextView[] dots;
     private int[] layouts;
     private Button btnSkip, btnNext;
-    private PrefManager prefManager;
     private FirebaseAuth mAuth;
 
     @Override

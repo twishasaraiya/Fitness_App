@@ -14,8 +14,8 @@
         android:theme="@style/Theme.AppCompat">
         <activity
             android:name=".WelcomeActivity"
-            android:theme="@style/Theme.AppCompat"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,6 +28,7 @@
             android:name=".DisplayMessageActivity"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".ProfileActivity" />
+        <activity android:name=".BeginnerWorkout"></activity>
     </application>
 
 </manifest>

@@ -13,23 +13,44 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.youtube.player.YouTubeBaseActivity;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerView;
 
 import java.util.Locale;
 
-public class BeginnerWorkout extends AppCompatActivity implements View.OnClickListener,TextToSpeech.OnInitListener{
+public class BeginnerWorkout extends YouTubeBaseActivity implements View.OnClickListener,TextToSpeech.OnInitListener,YouTubePlayer.OnInitializedListener{
 
     private TextView[] mtextView;
     private LinearLayout mLinearLayout;
-    private ImageView mImageView;
+    private TextView startWorkout;
     private boolean toggleButton = false;
     private CountDownTimer countDownTimer;
     private TextToSpeech tts;
+
+    // To start next exercise after a delay
     final Handler handler = new Handler();
+    // to loop through exercises
     int counter = 0;
+
+    // text to speech during each exercise
     String text[] = {
             "Get Ready Dynamic Runner Lunges for 60 Seconds",
             "Up Next Lateral Hip Openers for 60 seconds",
             "Get Ready Reverse Lunge Reaches for 60 seconds"
+    };
+
+    private YouTubePlayerView youTubeView;
+    private YouTubePlayer mPlayer;
+    //YOUTUBE API KEY
+    private String YOUTUBE_API_KEY = "AIzaSyCmJwvmfVQhykedsh27U6t5emdJWf99scE";
+    String videoIds[] ={
+            "7amGIIJJlsI",
+            "9E-1ilf4xlQ",
+            "SOee8Lgzxus"
     };
 
     @Override
@@ -44,10 +65,15 @@ public class BeginnerWorkout extends AppCompatActivity implements View.OnClickLi
             mtextView[id] = ((TextView) findViewById(resId));
         }
         mLinearLayout = (LinearLayout) findViewById(R.id.drl);
-        mImageView = (ImageView) findViewById(R.id.play);
+        startWorkout = (TextView) findViewById(R.id.start_workout);
         tts =  new TextToSpeech(this,this);
 
-        findViewById(R.id.play).setOnClickListener(this);
+        // loading the videos
+        youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
+        youTubeView.initialize(YOUTUBE_API_KEY,this);
+
+
+        findViewById(R.id.start_workout).setOnClickListener(this);
     }
 
     private void startTimer(long i, final int id) {
@@ -78,22 +104,29 @@ public class BeginnerWorkout extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View view) {
         toggleButton = !toggleButton;
+        if(counter == 0 )
+                mPlayer.play();
         handler.post(new Runnable() {
             @Override
             public void run() {
                 soundBeep();
                 speakOut(text[counter]);
                 soundBeep();
+                if(counter!=0){
+                    mPlayer.loadVideo(videoIds[counter]);
+                }
                 startTimer(60,counter);
                 counter++;
                 handler.postDelayed(this,61*1000);
             }
         });
         if(toggleButton) {
-            //change to ic_media_pause
+            //change text to Pause Workout
+            startWorkout.setText("PAUSE WORKOUT");
         }
         else {
             //change to ic_media_play
+            startWorkout.setText("START WORKOUT");
         }
     }
 
@@ -104,5 +137,20 @@ public class BeginnerWorkout extends AppCompatActivity implements View.OnClickLi
         if(result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED){
             Log.e("TTS","This language is not supported");
         }
+    }
+
+    @Override
+    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
+        mPlayer = youTubePlayer;
+            if(!b){
+                mPlayer.cueVideo(videoIds[0]);
+            }else{
+                mPlayer.play();
+            }
+    }
+
+    @Override
+    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+        Toast.makeText(this,"Error Loading Video Check Connection",Toast.LENGTH_SHORT);
     }
 }

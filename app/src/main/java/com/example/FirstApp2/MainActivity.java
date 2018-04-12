@@ -16,6 +16,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     ImageView img1;
     ImageView img2;
     ImageView img3;
+
+    String text[];
+    String speechText[];
+    String videoIds[];
+
     protected BottomNavigationView navigationView;
 
     @Override
@@ -36,21 +41,71 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         String message;
         switch(view.getId()){
             case R.id.imageView1:
-                    intent =new Intent(this, BeginnerWorkout.class);
+                    intent =new Intent(this, DisplayMessageActivity.class);
                     message="THE STARTUP PLAN";
+                    speechText =new String[] {
+                        "Get Ready Dynamic Runner Lunges for 60 Seconds",
+                        "Up Next Lateral Hip Openers for 60 seconds",
+                        "Get Ready Lateral Hip Openers for 60 seconds"
+                    };
+                    videoIds = new String[]{
+                        "7amGIIJJlsI",
+                        "9E-1ilf4xlQ",
+                        "SOee8Lgzxus"
+                        };
+                    text= new String[]{
+                            "Dynamic Runner Lunges",
+                            "Lateral Hip Openers",
+                            "Lateral Hip Openers"
+                    };
                     intent.putExtra(EXTRA_MESSAGE,message);
+                    intent.putExtra("VideoIds",videoIds);
+                    intent.putExtra("speechText",speechText);
+                    intent.putExtra("text",text);
                     startActivity(intent);
                 break;
             case R.id.imageView2:
                  intent =new Intent(this, DisplayMessageActivity.class);
-                message="Resistance";
-                intent.putExtra(EXTRA_MESSAGE,message);
+                speechText =new String[] {
+                        "Jumping Jacks 20 reps Be quick and light",
+                        "Body Weight Squats 15 reps Remember to count your reps. give it your best",
+                        "Modified Push Ups 10 reps Come On You have got this"
+                };
+                videoIds = new String[]{
+                        "dmYwZH_BNd0",
+                        "UQ9A_CahlN8",
+                        "I0ZNsZ2ReCw"
+                };
+                text= new String[]{
+                        "Jumping Jacks",
+                        "Body Weight Squats",
+                        "Modified Push Ups"
+                };
+                intent.putExtra("VideoIds",videoIds);
+                intent.putExtra("speechText",speechText);
+                intent.putExtra("text",text);
                 startActivity(intent);
                 break;
             case R.id.imageView3:
                 intent =new Intent(this, DisplayMessageActivity.class);
-                message="Strength";
-                intent.putExtra(EXTRA_MESSAGE,message);
+                speechText =new String[] {
+                        "Get Ready Dynamic Runner Lunges for 60 Seconds",
+                        "Up Next Lateral Hip Openers for 60 seconds",
+                        "Get Ready Lateral Hip Openers for 60 seconds"
+                };
+                videoIds = new String[]{
+                        "7amGIIJJlsI",
+                        "9E-1ilf4xlQ",
+                        "SOee8Lgzxus"
+                };
+                text= new String[]{
+                        "Dynamic Runner Lunges",
+                        "Lateral Hip Openers",
+                        "Lateral Hip Openers"
+                };
+                intent.putExtra("VideoIds",videoIds);
+                intent.putExtra("speechText",speechText);
+                intent.putExtra("text",text);
                 startActivity(intent);
                 break;
         }

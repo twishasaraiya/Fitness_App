@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:title="Settings"
+        android:id="@+id/settings"
+        android:orderInCategory="100"
+        app:showAsAction="never"></item>
+
+    <item android:id="@+id/read_data"
+        android:title="Read Data"
+        android:orderInCategory="100"
+        app:showAsAction="never"></item>
+
+    <item android:id="@+id/disconnect_from_google_fit"
+        android:title="Disconnect from Google Fit"
+        android:orderInCategory="100"
+        app:showAsAction="never"></item>
+</menu>

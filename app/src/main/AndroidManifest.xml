@@ -28,7 +28,7 @@
             android:name=".DisplayMessageActivity"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".ProfileActivity" />
-        <activity android:name=".BeginnerWorkout"></activity>
+        <activity android:name=".BeginnerWorkout" />
     </application>
 
 </manifest>

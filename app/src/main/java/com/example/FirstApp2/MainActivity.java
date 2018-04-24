@@ -1,14 +1,28 @@
 package com.example.FirstApp2;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.fitness.Fitness;
+import com.google.android.gms.fitness.FitnessOptions;
+import com.google.android.gms.fitness.data.DataSet;
+import com.google.android.gms.fitness.data.DataType;
+import com.google.android.gms.fitness.data.Field;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -23,6 +37,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     protected BottomNavigationView navigationView;
 
+    // ==================================================================
+    public static final String TAG = "StepCounter";
+    private static final int REQUEST_OAUTH_REQUEST_CODE = 0x1001;
+    private static final String mClient = "680880859524-vccqua30ninjkk48s0npph935vh6h3ac.apps.googleusercontent.com";
+    // ==================================================================
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,8 +54,100 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         navigationView = (BottomNavigationView) findViewById(R.id.navigation);
         navigationView.setOnNavigationItemSelectedListener(this);
+
+        // ============================================================================
+        // Create a FitnessOptions instance, declaring the Fit API data types and access required by your app
+        FitnessOptions fitnessOptions = FitnessOptions.builder()
+                .addDataType(DataType.TYPE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
+                .addDataType(DataType.AGGREGATE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
+                .build();
+
+        if (!GoogleSignIn.hasPermissions(GoogleSignIn.getLastSignedInAccount(this), fitnessOptions)) {
+            GoogleSignIn.requestPermissions(
+                    this, // your activity
+                    REQUEST_OAUTH_REQUEST_CODE,
+                    GoogleSignIn.getLastSignedInAccount(this),
+                    fitnessOptions);
+        } else {
+            accessGoogleFit();
+        }
+        //==============================================================================
+
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == REQUEST_OAUTH_REQUEST_CODE) {
+                accessGoogleFit();
+            }
+        }
+    }
+
+    private void accessGoogleFit() {
+        //To request background collection of sensor data in your app, use the RecordingClient.subscribe method
+        // Google Fit will store fitness data of type TYPE_STEP_COUNT_CUMULATIVE in the fitness history on behalf of your app.
+        Fitness.getRecordingClient(this, GoogleSignIn.getLastSignedInAccount(this))
+                .subscribe(DataType.TYPE_STEP_COUNT_CUMULATIVE)
+                .addOnCompleteListener(
+                        new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Log.i(TAG, "Successfully subscribed!");
+                                } else {
+                                    Log.w(TAG, "There was a problem subscribing.", task.getException());
+                                }
+                            }
+                        });
+    }
+
+
+    private void readData() {
+        Fitness.getHistoryClient(this, GoogleSignIn.getLastSignedInAccount(this))
+                .readDailyTotal(DataType.TYPE_STEP_COUNT_DELTA)
+                .addOnSuccessListener(
+                        new OnSuccessListener<DataSet>() {
+                            @Override
+                            public void onSuccess(DataSet dataSet) {
+                                long total =
+                                        dataSet.isEmpty()
+                                                ? 0
+                                                : dataSet.getDataPoints().get(0).getValue(Field.FIELD_STEPS).asInt();
+                                Log.i(TAG, "Total steps: " + total);
+                            }
+                        })
+                .addOnFailureListener(
+                        new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "There was a problem getting the step count.", e);
+                            }
+                        });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+        if(id == R.id.read_data){
+            readData();
+            return true;
+        }
+        else if(id == R.id.disconnect_from_google_fit){
+            disconnectGoogleFit();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void disconnectGoogleFit(){
+        Fitness.getConfigClient(this, GoogleSignIn.getLastSignedInAccount(this)).disableFit();
+    }
     public void onImageClick(View view){
         Intent intent;
         String message;
@@ -120,6 +232,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 return true;
             case R.id.navigation_nutrition:
                 Toast.makeText(this, "Nutrition", Toast.LENGTH_SHORT).show();
+                //intent = new Intent(this,Nutrition.class);
+                //startActivity(intent);
                 return true;
             case R.id.navigation_profile:
                 Toast.makeText(this, "Profile", Toast.LENGTH_SHORT).show();

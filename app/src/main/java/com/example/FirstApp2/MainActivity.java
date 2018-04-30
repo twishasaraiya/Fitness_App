@@ -232,8 +232,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 return true;
             case R.id.navigation_nutrition:
                 Toast.makeText(this, "Nutrition", Toast.LENGTH_SHORT).show();
-                //intent = new Intent(this,Nutrition.class);
-                //startActivity(intent);
+                intent = new Intent(this,Nutrition.class);
+                startActivity(intent);
                 return true;
             case R.id.navigation_profile:
                 Toast.makeText(this, "Profile", Toast.LENGTH_SHORT).show();
